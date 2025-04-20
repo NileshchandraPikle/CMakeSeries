@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(rooster
+        VERSION 1.0
+        DESCRIPTION "Rooster to demonstrate PRIVATE PUBLIC and INTERFACE linking"
+        LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 20)
+
+add_library(libmath STATIC ${CMAKE_CURRENT_SOURCE_DIR}/math/supermath.cpp)
+target_include_directories(libmath PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/math/include)
+
+add_library(libstats STATIC ${CMAKE_CURRENT_SOURCE_DIR}/stats/stats.cpp)
+target_include_directories(libstats PUBLIC ${CMAKE_CURRENT_DIR}/stats/include)
+
+target_link_libraries(libstats PUBLIC libmath)
+
+add_executable(rooster ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+target_link_libraries(rooster PUBLIC libstats)
